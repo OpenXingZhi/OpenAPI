@@ -1,0 +1,22 @@
+plugins {
+  id "org.openapi.generator" version "6.6.0"
+}
+
+def spec = "$rootDir/swagger.yaml"
+
+openApiValidate {
+    inputSpec = spec
+}
+
+openApiGenerate {
+    generatorName = "kotlin"
+    inputSpec = spec
+//    remoteInputSpec = "https://openapi.shxzzn.com/swagger/v1/swagger.json"
+//    modelNameSuffix = "Dto"
+    configOptions = [
+            library             : "jvm-retrofit2",
+            useCoroutines       : "true",
+            serializationLibrary: "kotlinx_serialization",
+            dateLibrary         : "threetenbp-localdatetime",
+    ]
+}

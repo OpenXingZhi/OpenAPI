@@ -1,0 +1,316 @@
+# https://swagger.io/specification/
+openapi: 3.0.1
+info:
+  title: XingZhi Library API 1.0
+  description: XingZhi Library API
+  version: "1.0"
+servers:
+  - url: "http://10.147.19.177"
+paths:
+  /api/OPAC/Search:
+    post:
+      tags:
+        - OPAC
+      summary: 查询图书信息
+      parameters:
+        - name: q
+          in: query
+          description: "搜索内容"
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: "当前页起始序号"
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: "每页数量"
+          schema:
+            type: integer
+            format: int32
+        - name: api-version
+          in: header
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchInfoDto"
+
+  /api/OPAC/ctrl_full/{ctrlNo}:
+    get:
+      tags:
+        - OPAC
+      summary: 根据控制号查询书⽬控制信息(包含对应的资产信息)
+      operationId: GetOPACCtrlFullCtrlNo
+      parameters:
+        - name: ctrlNo
+          in: path
+          description: "控制号"
+          required: true
+          schema:
+            type: string
+        - name: api-version
+          in: header
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FullCtrlInfoDto"
+  /api/OPAC/shelf/{id}:
+    get:
+      tags:
+        - OPAC
+      summary: 根据 Id 获得书架信息
+      parameters:
+        - name: id
+          in: path
+          description: "架位号"
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: api-version
+          in: header
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShelfInfoDtoResponse"
+components:
+  schemas:
+    SearchInfoDto:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/BaseCtrlInfoDto"
+        total:
+          type: integer
+          format: int32
+      additionalProperties: false
+    AssetInfoDto:
+      type: object
+      required:
+        - ctrlNo
+        - assetNo
+        - curShelfId
+      properties:
+        ctrlNo:
+          type: string
+          description: "控制号[id]"
+        assetNo:
+          type: string
+          description: "资产编号[id+hw]"
+        barcode:
+          type: string
+          description: "条形码"
+        price:
+          type: string
+          description: "价格"
+        priceVal:
+          type: integer
+          format: int32
+          description: "价格（分）"
+        libId:
+          type: string
+          description: "馆藏地（库房编号[kfbh]）"
+        lendable:
+          type: boolean
+          description: "是否可借"
+        callNo:
+          type: string
+          description: "索书号"
+        volume:
+          type: string
+          description: "卷期"
+        bookType:
+          type: string
+          description: "图书类型"
+        bookTypeName:
+          type: string
+          description: "图书类型名称"
+        medium:
+          type: string
+          description: "载体形态(Marc)"
+        status:
+          $ref: "#/components/schemas/AssetStatusDto"
+        dueTime:
+          type: string
+          description: "应还时间"
+        curShelfId:
+          type: string
+          description: "当前架位号（货位[hw]）"
+        curShelfDescription:
+          type: string
+          description: "当前架位描述"
+        areaNumber:
+          type: string
+          description: "货区编号[hqbh]"
+        areaName:
+          type: string
+          description: "货区名称（货区编号[hqbh]的中文）"
+        areaFloor:
+          type: string
+          description: "楼层（货区编号[hqbh]查表）"
+      additionalProperties: false
+    AssetStatusDto:
+      description: "图书状态"
+      # 1. lendOut 借出
+      # 2. collIn 在馆
+      # 3. collCull 剔除
+      # 4. collLost 丢失
+      # 5. cataIn 在编
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+      type: integer
+      format: int32
+    BaseCtrlInfoDto:
+      type: object
+      required:
+        - ctrlNo
+      properties:
+        ctrlNo:
+          type: string
+          description: "控制号[id]"
+        title:
+          type: string
+          description: "题名[sm]"
+        subTitle:
+          type: string
+          description: "次要题名"
+        author:
+          type: string
+          description: "责任人[bianzh]"
+        subAuthor:
+          type: string
+          description: "次要责任人[yizh]"
+        price:
+          type: string
+          description: "价格[dj]"
+        stdNum:
+          type: string
+          description: "标准号(ISBN/ISSN)"
+        publisher:
+          type: string
+          description: "出版社"
+        pubDate:
+          type: string
+          description: "出版日期[cbny]"
+        pubLocale:
+          type: string
+          description: "出版地"
+        clc:
+          type: string
+          description: "中图分类号[cip]"
+        section:
+          type: string
+          description: "分册"
+        language:
+          type: string
+          description: "语种"
+        edition:
+          type: string
+          description: "版次[bc]"
+        subjects:
+          type: string
+          description: "主题词（分类[fl_txt]）"
+        series:
+          type: string
+          description: "丛书名"
+        copyLent:
+          type: integer
+          format: int32
+          description: "借出册数"
+        copyTotal:
+          type: integer
+          format: int32
+          description: "总册数"
+        cover:
+          type: string
+          description: "封面"
+        stockCount:
+          type: integer
+          format: int32
+          description: "库存册数[kccs]"
+      additionalProperties: false
+    FullCtrlInfoDto:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/BaseCtrlInfoDto"
+        - type: object
+          properties:
+            description:
+              type: string
+              description: "简介[abstract]"
+            assets:
+              type: array
+              description: "资产信息"
+              items:
+                $ref: "#/components/schemas/AssetInfoDto"
+      additionalProperties: false
+    ShelfInfoDto:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: "架位号[hw]"
+        uid:
+          type: string
+          description: "RFID UID"
+        name:
+          type: string
+          description: "架位名称"
+        navId:
+          type: string
+          description: "导航 ID"
+        description:
+          type: string
+          description: "架位描述"
+      additionalProperties: false
+    ShelfInfoDtoResponse:
+      type: object
+      properties:
+        targetUrl:
+          type: string
+        success:
+          type: boolean
+        message:
+          type: string
+        unAuthorizedRequest:
+          type: boolean
+        result:
+          $ref: "#/components/schemas/ShelfInfoDto"
+        totalCount:
+          type: integer
+          format: int32
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: 'JWT Authorization header using the Bearer scheme. Format: "Authorization: Bearer {token}"'
+      name: Authorization
+      in: header
+security:
+  - Bearer: [ ]
