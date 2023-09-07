@@ -2,7 +2,7 @@ plugins {
   id "org.openapi.generator" version "6.6.0"
 }
 
-def spec = "$rootDir/swagger.yaml"
+def spec = "$rootDir/src/swagger.yaml"
 
 openApiValidate {
     inputSpec = spec
