@@ -1,8 +1,11 @@
 plugins {
     id "org.openapi.generator" version "7.0.1"
+    id "maven-publish"
 }
 
 def spec = "$rootDir/doc/swagger.yaml"
+def group = "com.xingzhi"
+def ver = "1.0.1"
 
 // https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
 // https://openapi-generator.tech/docs/generators
@@ -15,8 +18,8 @@ openApiGenerate {
     inputSpec = spec
     outputDir = "$rootDir/api"
 //    remoteInputSpec = "https://openapi.shxzzn.com/swagger/v1/swagger.json"
-    groupId = "com.xingzhi"
-    version = "1.0.1"
+    groupId = group
+    version = ver
     packageName = "com.xingzhi.robot"
     apiPackage = "com.xingzhi.robot.api"
     modelPackage = "com.xingzhi.robot.model"
@@ -30,4 +33,30 @@ openApiGenerate {
             omitGradleWrapper   : "true",
             useSettingsGradle   : "true",
     ]
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/OpenXingZhi/OpenAPI")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+
+        publications {
+            binary(MavenPublication) {
+                groupId = group
+                artifactId = project.name
+                version = ver
+
+                from components.java
+            }
+        }
+    }
 }
