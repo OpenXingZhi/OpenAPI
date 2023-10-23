@@ -1,6 +1,5 @@
 plugins {
     id "org.openapi.generator" version "7.0.1"
-    id "maven-publish"
 }
 
 def spec = "$rootDir/doc/swagger.yaml"
@@ -31,28 +30,4 @@ openApiGenerate {
             omitGradleWrapper   : "true",
             useSettingsGradle   : "true",
     ]
-    cleanupOutput = true
-}
-
-subprojects {
-    publishing {
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/OpenXingZhi/OpenAPI")
-                credentials {
-                    username = System.getenv("GITHUB_ACTOR")
-                    password = System.getenv("GITHUB_TOKEN")
-                }
-            }
-        }
-
-        publications {
-            binary(MavenPublication) {
-                afterEvaluate {
-                    from components.java
-                }
-            }
-        }
-    }
 }
