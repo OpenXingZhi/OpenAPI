@@ -67,20 +67,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/FullCtrlInfoDto"
-  /api/OPAC/shelf/{id}:
+  /api/OPAC/shelf/{shelfNo}:
     get:
       tags:
         - OPAC
       summary: 根据 Id 获得书架信息
       operationId: apiOPACShelfIdGet
       parameters:
-        - name: id
+        - name: shelfNo
           in: path
           description: "架位号"
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: api-version
           in: header
           schema:
@@ -110,7 +109,6 @@ components:
       required:
         - ctrlNo
         - assetNo
-        - curShelfId
       properties:
         ctrlNo:
           type: string
@@ -169,6 +167,10 @@ components:
         areaFloor:
           type: string
           description: "楼层（货区编号[hqbh]查表）"
+        stockCount:
+          type: integer
+          format: int32
+          description: "库存册数[kccs]（当前货位上的册数）"
       additionalProperties: false
     AssetStatusDto:
       description: "图书状态"
@@ -253,7 +255,7 @@ components:
         stockCount:
           type: integer
           format: int32
-          description: "库存册数[kccs]"
+          description: "库存册数[kccs]（当前书目的总库存册数）"
       additionalProperties: false
     FullCtrlInfoDto:
       type: object
@@ -273,9 +275,9 @@ components:
     ShelfInfoDto:
       type: object
       required:
-        - id
+        - shelfNo
       properties:
-        id:
+        shelfNo:
           type: string
           description: "架位号[hw]"
         uid:
