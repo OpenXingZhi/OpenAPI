@@ -1,9 +1,11 @@
 plugins {
-  id "org.openapi.generator" version "6.6.0"
+    id "org.openapi.generator" version "7.0.1"
 }
 
 def spec = "$rootDir/doc/swagger.yaml"
 
+// https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
+// https://openapi-generator.tech/docs/generators
 openApiValidate {
     inputSpec = spec
 }
@@ -11,12 +13,21 @@ openApiValidate {
 openApiGenerate {
     generatorName = "kotlin"
     inputSpec = spec
+    outputDir = "$rootDir/api"
 //    remoteInputSpec = "https://openapi.shxzzn.com/swagger/v1/swagger.json"
+    groupId = "com.xingzhi"
+    version = "1.0.1"
+    packageName = "com.xingzhi.robot"
+    apiPackage = "com.xingzhi.robot.api"
+    modelPackage = "com.xingzhi.robot.model"
 //    modelNameSuffix = "Dto"
+//    invokerPackage = "com.xingzhi.robot.invoker"
     configOptions = [
             library             : "jvm-retrofit2",
             useCoroutines       : "true",
             serializationLibrary: "kotlinx_serialization",
             dateLibrary         : "threetenbp-localdatetime",
+            omitGradleWrapper   : "true",
     ]
+    cleanupOutput = true
 }

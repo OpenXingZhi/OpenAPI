@@ -12,6 +12,7 @@ paths:
       tags:
         - OPAC
       summary: 查询图书信息
+      operationId: apiOPACSearchPost
       parameters:
         - name: q
           in: query
@@ -47,7 +48,7 @@ paths:
       tags:
         - OPAC
       summary: 根据控制号查询书⽬控制信息(包含对应的资产信息)
-      operationId: GetOPACCtrlFullCtrlNo
+      operationId: apiOPACCtrlFullCtrlNoGet
       parameters:
         - name: ctrlNo
           in: path
@@ -71,6 +72,7 @@ paths:
       tags:
         - OPAC
       summary: 根据 Id 获得书架信息
+      operationId: apiOPACShelfIdGet
       parameters:
         - name: id
           in: path
