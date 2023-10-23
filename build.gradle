@@ -28,6 +28,7 @@ openApiGenerate {
             serializationLibrary: "kotlinx_serialization",
             dateLibrary         : "threetenbp-localdatetime",
             omitGradleWrapper   : "true",
+            useSettingsGradle   : "true",
     ]
     cleanupOutput = true
 }
