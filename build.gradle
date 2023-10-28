@@ -4,7 +4,7 @@ plugins {
 
 def spec = "$rootDir/doc/swagger.yaml"
 def group = "com.xingzhi"
-def ver = "1.0.5"
+def ver = "1.0.6"
 
 // https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
 // https://openapi-generator.tech/docs/generators
@@ -46,6 +46,8 @@ project("api") {
     jar {
         metaInf {
             from layout.projectDirectory.file('proguard-rules.pro')
+            into ("proguard/")
+            rename 'proguard-rules.pro', 'api.pro'
         }
     }
 
