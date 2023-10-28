@@ -1,11 +1,10 @@
 plugins {
     id "org.openapi.generator" version "7.0.1"
-    id "maven-publish"
 }
 
 def spec = "$rootDir/doc/swagger.yaml"
 def group = "com.xingzhi"
-def ver = "1.0.4"
+def ver = "1.0.5"
 
 // https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
 // https://openapi-generator.tech/docs/generators
@@ -35,12 +34,19 @@ openApiGenerate {
     ]
 }
 
-subprojects {
+project("api") {
     apply plugin: 'java-library'
+    apply plugin: "maven-publish"
 
     java {
         withJavadocJar()
         withSourcesJar()
+    }
+
+    jar {
+        metaInf {
+            from layout.projectDirectory.file('proguard-rules.pro')
+        }
     }
 
     publishing {
