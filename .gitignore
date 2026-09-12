@@ -23,5 +23,3 @@ gradle-app.setting
 # Local
 local.properties
 .idea
-/api/**
-!/api/.gitkeep
