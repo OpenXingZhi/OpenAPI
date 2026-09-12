@@ -1,37 +1,37 @@
 plugins {
-    id "org.openapi.generator" version "7.0.1"
+    id "org.openapi.generator" version "7.25.0"
 }
 
-def spec = "$rootDir/doc/swagger.yaml"
 def group = "com.xingzhi"
-def ver = "1.0.6"
+def ver = "1.1.0"
 
 // https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
 // https://openapi-generator.tech/docs/generators
 openApiValidate {
-    inputSpec = spec
+    inputSpec.set(layout.projectDirectory.file("doc/swagger.yaml"))
 }
 
 openApiGenerate {
-    generatorName = "kotlin"
-    inputSpec = spec
-    outputDir = "$rootDir/api"
+    generatorName.set("kotlin")
+    inputSpec.set(layout.projectDirectory.file("doc/swagger.yaml"))
+    outputDir.set(layout.projectDirectory.dir("api"))
 //    remoteInputSpec = "https://openapi.shxzzn.com/swagger/v1/swagger.json"
-    groupId = group
-    version = ver
-    packageName = "com.xingzhi.robot"
-    apiPackage = "com.xingzhi.robot.api"
-    modelPackage = "com.xingzhi.robot.model"
+    groupId.set(group)
+    id.set("api")
+    version.set(ver)
+    packageName.set("com.xingzhi.robot")
+    apiPackage.set("com.xingzhi.robot.api")
+    modelPackage.set("com.xingzhi.robot.model")
 //    modelNameSuffix = "Dto"
 //    invokerPackage = "com.xingzhi.robot.invoker"
-    configOptions = [
+    configOptions.set([
             library             : "jvm-retrofit2",
             useCoroutines       : "true",
             serializationLibrary: "kotlinx_serialization",
             dateLibrary         : "threetenbp-localdatetime",
             omitGradleWrapper   : "true",
             useSettingsGradle   : "true",
-    ]
+    ])
 }
 
 project("api") {
@@ -40,7 +40,6 @@ project("api") {
 
     java {
         withJavadocJar()
-        withSourcesJar()
     }
 
     jar {
@@ -60,16 +59,6 @@ project("api") {
                     username = System.getenv("GITHUB_ACTOR")
                     password = System.getenv("GITHUB_TOKEN")
                 }
-            }
-        }
-
-        publications {
-            binary(MavenPublication) {
-                groupId = group
-                artifactId = project.name
-                version = ver
-
-                from components.java
             }
         }
     }
