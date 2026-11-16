@@ -1,19 +1,22 @@
+import org.openapitools.generator.gradle.plugin.extensions.OpenApiGeneratorGenerateExtension
+import org.openapitools.generator.gradle.plugin.extensions.OpenApiGeneratorValidateExtension
+
 plugins {
-    id "org.openapi.generator" version "7.25.0"
-    id "org.jetbrains.kotlin.jvm" version "2.4.0" apply false
-    id "org.jetbrains.kotlin.plugin.serialization" version "2.4.0" apply false
+    id("org.openapi.generator") version "7.25.0"
+    kotlin("jvm") version "2.4.0" apply false
+    kotlin("plugin.serialization") version "2.4.0" apply false
 }
 
 group = "com.xingzhi"
-version = "1.1.0"
+version = providers.gradleProperty("version").orElse("1.1.0").get()
 
 // https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
 // https://openapi-generator.tech/docs/generators
-openApiValidate {
+configure<OpenApiGeneratorValidateExtension> {
     inputSpec.set(layout.projectDirectory.file("doc/swagger.yaml"))
 }
 
-openApiGenerate {
+configure<OpenApiGeneratorGenerateExtension> {
     generatorName.set("kotlin")
     inputSpec.set(layout.projectDirectory.file("doc/swagger.yaml"))
     outputDir.set(layout.buildDirectory.dir("generated/openapi"))
@@ -27,14 +30,16 @@ openApiGenerate {
     generateModelDocumentation.set(false)
     generateApiTests.set(false)
     generateModelTests.set(false)
-    configOptions.set([
-            library             : "jvm-retrofit2",
-            useCoroutines       : "true",
-            serializationLibrary: "kotlinx_serialization",
-            dateLibrary         : "threetenbp-localdatetime",
-            omitGradleWrapper   : "true",
-            useSettingsGradle   : "true",
-    ])
+    configOptions.set(
+        mapOf(
+            "library" to "jvm-retrofit2",
+            "useCoroutines" to "true",
+            "serializationLibrary" to "kotlinx_serialization",
+            "dateLibrary" to "threetenbp-localdatetime",
+            "omitGradleWrapper" to "true",
+            "useSettingsGradle" to "true",
+        ),
+    )
 }
 
 tasks.named("openApiGenerate") {

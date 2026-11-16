@@ -12,4 +12,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "OpenAPI"
-include ":api"
+include(":api")
