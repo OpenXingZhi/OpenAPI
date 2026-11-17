@@ -35,7 +35,7 @@ configure<OpenApiGeneratorGenerateExtension> {
             "library" to "jvm-retrofit2",
             "useCoroutines" to "true",
             "serializationLibrary" to "kotlinx_serialization",
-            "dateLibrary" to "threetenbp-localdatetime",
+            "dateLibrary" to "java8",
             "omitGradleWrapper" to "true",
             "useSettingsGradle" to "true",
         ),

@@ -41,7 +41,6 @@ tasks.named("sourcesJar") {
 dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
-    api("org.threeten:threetenbp:1.7.3")
     api("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.4.0")
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
