@@ -2,7 +2,7 @@
 
 Generated Kotlin client for the XingZhi library HTTP API.
 
-Coordinates: `com.xingzhi:api:1.1.0`
+Coordinates: `com.xingzhi:api:1.1.1`
 
 ```kotlin
 maven {
@@ -10,14 +10,14 @@ maven {
     credentials(PasswordCredentials::class)
 }
 
-implementation("com.xingzhi:api:1.1.0")
+implementation("com.xingzhi:api:1.1.1")
 ```
 
 GitHub Packages requires a username and a token with `read:packages`
 (`GitHubPackagesUsername` / `GitHubPackagesPassword`, or `GITHUB_ACTOR` /
 `GITHUB_TOKEN`).
 
-The package version defaults to `1.1.0`. Override it with `-Pversion=`.
+The package version defaults to `1.1.1`. Override it with `-Pversion=`.
 
 ## Code generation
 

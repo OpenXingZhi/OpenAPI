@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.xingzhi"
-version = providers.gradleProperty("version").orElse("1.1.0").get()
+version = providers.gradleProperty("version").orElse("1.1.1").get()
 
 // https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
 // https://openapi-generator.tech/docs/generators
